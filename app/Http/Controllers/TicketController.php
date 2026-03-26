@@ -41,6 +41,21 @@ class TicketController extends Controller
         return view('tickets.index', ['tickets' => array_values($tickets), 'title' => $title]);
     }
 
+    public function closed()
+    {
+        $tickets = self::readTickets();
+
+        // Filtrar los que están cerrados
+        $tickets = array_filter($tickets, fn($t) => strtolower($t['status']) === 'closed');
+
+        return view('tickets.closed', [
+            'tickets' => array_values($tickets),
+            'title' => 'Closed Tickets'
+        ]);
+    }
+
+
+
     public function show($id)
     {
         $tickets = self::readTickets();
@@ -60,7 +75,7 @@ class TicketController extends Controller
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'priority' => $request->input('priority'),
-            'status' => 'Open',
+            'status' => 'closed',
             'price' => $this->calculatePrice($request->input('priority')),
             'created_at' => now()->format('Y-m-d H:i:s'),
         ];
@@ -121,7 +136,7 @@ class TicketController extends Controller
 
     private function calculatePrice($priority): int
     {
-        return match($priority) {
+        return match ($priority) {
             'high' => 100,
             'medium' => 50,
             'low' => 20,

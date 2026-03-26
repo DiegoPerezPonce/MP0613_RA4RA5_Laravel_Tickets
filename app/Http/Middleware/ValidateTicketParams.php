@@ -10,7 +10,7 @@ class ValidateTicketParams
     /**
      * List of allowed statuses and priorities
      */
-    private $allowedStatuses = ['open', 'in_progress', 'close'];
+    private $allowedStatuses = ['open', 'in_progress', 'closed'];
     private $allowedPriorities = ['low', 'medium', 'high'];
 
     /**
