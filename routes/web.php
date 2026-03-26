@@ -22,19 +22,28 @@ Route::get('/', function () {
 Route::prefix('tickets')->group(function () {
     Route::get('/', [TicketController::class, 'index'])
         ->middleware('validate.ticket.params');
+
     Route::get('/status/{status}', [TicketController::class, 'index'])
         ->middleware('validate.ticket.params');
+
+    // 👉 Añadir esta ruta ANTES de /{id}
+    Route::get('/closed', [TicketController::class, 'closed']);
+
     Route::get('/{id}', [TicketController::class, 'show'])
         ->where('id', '[0-9]+');
+
     Route::get('/create', function () {
         return view('tickets.create');
     });
+
     Route::post('/', [TicketController::class, 'store']);
+
     Route::get('/{id}/edit', [TicketController::class, 'edit'])
         ->where('id', '[0-9]+');
+
     Route::put('/{id}', [TicketController::class, 'update'])
         ->where('id', '[0-9]+');
+
     Route::delete('/{id}', [TicketController::class, 'delete'])
         ->where('id', '[0-9]+');
-
 });
